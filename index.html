@@ -279,63 +279,78 @@
     <div class="answer-badge" id="q5-ans" style="display:none"></div>
   </div>
 
-  <!-- Q6: 作りたいサイトのジャンル -->
+  <!-- Q6: GitHubアカウント -->
   <div class="card" id="q6" style="display:none">
     <div class="question-label">Q6</div>
-    <div class="question-text">作りたい Web サイトのイメージはありますか？</div>
+    <div class="question-text">GitHub のアカウントを持っていますか？<br><small style="font-weight:normal;color:#666">Cloudflare Pages と連携してサイトを公開するのに使います（無料）</small></div>
     <div class="btn-group">
-      <button class="btn green" onclick="answer(6,'自己紹介・プロフィールサイト')">自己紹介・プロフィール</button>
-      <button class="btn green" onclick="answer(6,'趣味・ブログ・活動紹介')">趣味・ブログ・活動紹介</button>
-      <button class="btn green" onclick="answer(6,'ビジネス・サービス紹介')">ビジネス・サービス紹介</button>
-      <button class="btn orange" onclick="answer(6,'まだ決まっていない')">まだ決まっていない</button>
+      <button class="btn green" onclick="answer(6,'持っている')">持っている</button>
+      <button class="btn orange" onclick="answer(6,'持っていない')">持っていない</button>
     </div>
     <div class="alert orange-bg" id="q6-alert">
-      大丈夫です！当日一緒に考えましょう。<br>
-      「どんな人に見てほしいか」「何を伝えたいか」をざっくり考えてきてもらえると、スムーズです。
+      GitHub の無料アカウントが必要です。<br>
+      オフ会前に <strong>github.com</strong> でアカウントを作成しておいてください（メールアドレスで登録できます）。
     </div>
     <div class="answer-badge" id="q6-ans" style="display:none"></div>
   </div>
 
-  <!-- Q7: ファイル操作スキル -->
+  <!-- Q7: 作りたいサイトのジャンル -->
   <div class="card" id="q7" style="display:none">
     <div class="question-label">Q7</div>
-    <div class="question-text">ファイルの保存・移動・フォルダ作成は問題なくできますか？</div>
+    <div class="question-text">作りたい Web サイトのイメージはありますか？</div>
     <div class="btn-group">
-      <button class="btn green" onclick="answer(7,'問題なくできる')">問題なくできる</button>
-      <button class="btn orange" onclick="answer(7,'少し不安')">少し不安</button>
+      <button class="btn green" onclick="answer(7,'自己紹介・プロフィールサイト')">自己紹介・プロフィール</button>
+      <button class="btn green" onclick="answer(7,'趣味・ブログ・活動紹介')">趣味・ブログ・活動紹介</button>
+      <button class="btn green" onclick="answer(7,'ビジネス・サービス紹介')">ビジネス・サービス紹介</button>
+      <button class="btn orange" onclick="answer(7,'まだ決まっていない')">まだ決まっていない</button>
     </div>
     <div class="alert orange-bg" id="q7-alert">
-      当日、生成したファイルをフォルダにまとめる操作があります。<br>
-      難しければオフ会内でフォローしますが、事前に練習しておくとスムーズです。
+      大丈夫です！当日一緒に考えましょう。<br>
+      「どんな人に見てほしいか」「何を伝えたいか」をざっくり考えてきてもらえると、スムーズです。
     </div>
     <div class="answer-badge" id="q7-ans" style="display:none"></div>
   </div>
 
-  <!-- Q8: スクリーンショット -->
+  <!-- Q8: ファイル操作スキル -->
   <div class="card" id="q8" style="display:none">
     <div class="question-label">Q8</div>
-    <div class="question-text" id="q8-text">スクリーンショット（画面の撮影）は撮れますか？<br><small style="font-weight:normal;color:#666" id="q8-hint"></small></div>
+    <div class="question-text">ファイルの保存・移動・フォルダ作成は問題なくできますか？</div>
     <div class="btn-group">
-      <button class="btn green" onclick="answer(8,'撮れる')">撮れる</button>
-      <button class="btn orange" onclick="answer(8,'撮れない・知らない')">撮れない・知らない</button>
+      <button class="btn green" onclick="answer(8,'問題なくできる')">問題なくできる</button>
+      <button class="btn orange" onclick="answer(8,'少し不安')">少し不安</button>
     </div>
-    <div class="alert orange-bg" id="q8-alert"></div>
+    <div class="alert orange-bg" id="q8-alert-skill">
+      当日、生成したファイルをフォルダにまとめる操作があります。<br>
+      難しければオフ会内でフォローしますが、事前に練習しておくとスムーズです。
+    </div>
     <div class="answer-badge" id="q8-ans" style="display:none"></div>
   </div>
 
-  <!-- Q9: Claude Codeへの画像添付経験 -->
+  <!-- Q9: スクリーンショット -->
   <div class="card" id="q9" style="display:none">
     <div class="question-label">Q9</div>
+    <div class="question-text">スクリーンショット（画面の撮影）は撮れますか？<br><small style="font-weight:normal;color:#666" id="q9-hint"></small></div>
+    <div class="btn-group">
+      <button class="btn green" onclick="answer(9,'撮れる')">撮れる</button>
+      <button class="btn orange" onclick="answer(9,'撮れない・知らない')">撮れない・知らない</button>
+    </div>
+    <div class="alert orange-bg" id="q9-alert"></div>
+    <div class="answer-badge" id="q9-ans" style="display:none"></div>
+  </div>
+
+  <!-- Q10: Claude Codeへの画像添付経験 -->
+  <div class="card" id="q10" style="display:none">
+    <div class="question-label">Q10</div>
     <div class="question-text">Claude Code のチャットに画像を添付して使ったことがありますか？</div>
     <div class="btn-group">
-      <button class="btn green" onclick="answer(9,'ある')">ある</button>
-      <button class="btn orange" onclick="answer(9,'ない')">ない</button>
+      <button class="btn green" onclick="answer(10,'ある')">ある</button>
+      <button class="btn orange" onclick="answer(10,'ない')">ない</button>
     </div>
-    <div class="alert orange-bg" id="q9-alert">
+    <div class="alert orange-bg" id="q10-alert">
       当日一緒にやるので大丈夫です！<br>
       チャット画面に画像ファイルをドラッグ＆ドロップするだけで添付できます。
     </div>
-    <div class="answer-badge" id="q9-ans" style="display:none"></div>
+    <div class="answer-badge" id="q10-ans" style="display:none"></div>
   </div>
 
   <!-- 結果セクション -->
@@ -354,7 +369,7 @@
     answers: {}
   };
 
-  const TOTAL_QUESTIONS = 9;
+  const TOTAL_QUESTIONS = 10;
 
   function updateProgress() {
     const answered = Object.keys(state.answers).length;
@@ -390,11 +405,6 @@
     updateCopyBtn();
   }
 
-  function hideAlert(id) {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'none';
-  }
-
   function showAlert(id) {
     const el = document.getElementById(id);
     if (el) el.style.display = 'block';
@@ -402,22 +412,20 @@
 
   function handleLogic(qid, val) {
     if (qid === 1) {
-      if (val === 'できていない・不安') {
-        showAlert('q1-alert');
-      }
+      if (val === 'できていない・不安') { showAlert('q1-alert'); }
       show('q2');
       return;
     }
 
     if (qid === 2) {
       state.os = val;
-      // Q8のヒントをOSに応じて設定
+      // Q9のヒントをOSに応じて設定
       if (val === 'Mac') {
-        document.getElementById('q8-hint').textContent = 'Mac：Command + Shift + 4 で範囲選択撮影できます';
-        document.getElementById('q8-alert').textContent = 'Mac は Command + Shift + 4 で画面の一部を撮影できます。オフ会前に一度試しておいてください。';
+        document.getElementById('q9-hint').textContent = 'Mac：Command + Shift + 4 で範囲選択撮影できます';
+        document.getElementById('q9-alert').textContent = 'Mac は Command + Shift + 4 で画面の一部を撮影できます。オフ会前に一度試しておいてください。';
       } else {
-        document.getElementById('q8-hint').textContent = 'Windows：PrintScreen キーまたは Windows + Shift + S で撮影できます';
-        document.getElementById('q8-alert').textContent = 'Windows は「Windows キー + Shift + S」で画面の一部を撮影できます。オフ会前に一度試しておいてください。';
+        document.getElementById('q9-hint').textContent = 'Windows：PrintScreen キーまたは Windows + Shift + S で撮影できます';
+        document.getElementById('q9-alert').textContent = 'Windows は「Windows キー + Shift + S」で画面の一部を撮影できます。オフ会前に一度試しておいてください。';
       }
       if (val === 'Mac') { show('q3a'); } else { show('q3b'); }
       return;
@@ -450,25 +458,31 @@
     }
 
     if (qid === 6) {
-      if (val === 'まだ決まっていない') { showAlert('q6-alert'); }
+      if (val === '持っていない') { showAlert('q6-alert'); }
       show('q7');
       return;
     }
 
     if (qid === 7) {
-      if (val === '少し不安') { showAlert('q7-alert'); }
+      if (val === 'まだ決まっていない') { showAlert('q7-alert'); }
       show('q8');
       return;
     }
 
     if (qid === 8) {
-      if (val === '撮れない・知らない') { showAlert('q8-alert'); }
+      if (val === '少し不安') { showAlert('q8-alert-skill'); }
       show('q9');
       return;
     }
 
     if (qid === 9) {
-      if (val === 'ない') { showAlert('q9-alert'); }
+      if (val === '撮れない・知らない') { showAlert('q9-alert'); }
+      show('q10');
+      return;
+    }
+
+    if (qid === 10) {
+      if (val === 'ない') { showAlert('q10-alert'); }
       show('result-section');
       buildResult();
       return;
@@ -496,10 +510,11 @@
       `Q3. OSバージョン: ${osVer}`,
       `Q4. ChatGPT: ${a[4] || '未回答'}`,
       `Q5. Cloudflare: ${a[5] || '未回答'}`,
-      `Q6. 作りたいサイト: ${a[6] || '未回答'}`,
-      `Q7. ファイル操作: ${a[7] || '未回答'}`,
-      `Q8. スクリーンショット: ${a[8] || '未回答'}`,
-      `Q9. 画像添付チャット経験: ${a[9] || '未回答'}`,
+      `Q6. GitHub: ${a[6] || '未回答'}`,
+      `Q7. 作りたいサイト: ${a[7] || '未回答'}`,
+      `Q8. ファイル操作: ${a[8] || '未回答'}`,
+      `Q9. スクリーンショット: ${a[9] || '未回答'}`,
+      `Q10. 画像添付チャット経験: ${a[10] || '未回答'}`,
     ];
 
     document.getElementById('result-text').textContent = lines.join('\n');
