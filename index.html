@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>First WEB 問診チェック</title>
+  <style>
+    :root {
+      --orange: #DA7756;
+      --orange-light: #f5e6e0;
+      --green: #4CAF50;
+      --green-light: #e8f5e9;
+      --btn-orange: #e8925c;
+      --btn-green: #5cb85c;
+      --gray: #888;
+      --border: #ddd;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Meiryo", sans-serif;
+      background: #faf8f6;
+      color: #333;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--orange);
+      color: white;
+      padding: 20px 16px;
+      text-align: center;
+    }
+    header h1 { font-size: 1.4rem; font-weight: bold; }
+    header p { font-size: 0.85rem; margin-top: 6px; opacity: 0.9; }
+
+    main {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .question-label {
+      font-size: 0.75rem;
+      color: var(--orange);
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .question-text {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+      color: white;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn.green { background: var(--btn-green); }
+    .btn.orange { background: var(--btn-orange); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .selected-green { outline: 3px solid #2e7d32; }
+    .selected-orange { outline: 3px solid #bf5000; }
+
+    .alert {
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-top: 12px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      display: none;
+    }
+    .alert.green-bg { background: var(--green-light); border-left: 4px solid var(--green); }
+    .alert.orange-bg { background: var(--orange-light); border-left: 4px solid var(--orange); }
+    .alert.red-bg { background: #ffebee; border-left: 4px solid #e53935; }
+
+    .answer-badge {
+      display: inline-block;
+      margin-top: 10px;
+      background: #f0f0f0;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.82rem;
+      color: #555;
+    }
+
+    #result-section { display: none; }
+
+    #copy-btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: var(--orange);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: opacity 0.2s;
+    }
+    #copy-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    #copy-btn:not(:disabled):hover { opacity: 0.88; }
+
+    #copy-msg {
+      text-align: center;
+      color: var(--green);
+      font-size: 0.88rem;
+      margin-top: 8px;
+      display: none;
+    }
+
+    #result-text {
+      background: #f5f5f5;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 0.82rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+      line-height: 1.7;
+      margin-top: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .progress-bar-wrap {
+      height: 4px;
+      background: #eee;
+      border-radius: 4px;
+      margin-bottom: 16px;
+    }
+    .progress-bar {
+      height: 4px;
+      background: var(--orange);
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+
+    @media (max-width: 480px) {
+      .btn-group { flex-direction: column; }
+      .btn { min-width: unset; width: 100%; min-height: 48px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>First WEB 問診チェック</h1>
+  <p>はじめてのWebサイト公開オフ会 事前確認シート</p>
+</header>
+
+<main>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+  </div>
+
+  <!-- Q1: Claude Code 使えているか -->
+  <div class="card" id="q1">
+    <div class="question-label">Q1</div>
+    <div class="question-text">Claude Code（クロコ）のデスクトップ版で、チャットが普通にできていますか？</div>
+    <div class="btn-group">
+      <button class="btn green" onclick="answer(1,'できている')">できている</button>
+      <button class="btn orange" onclick="answer(1,'できていない')">できていない・不安</button>
+    </div>
+    <div class="alert red-bg" id="q1-alert">
+      このオフ会は <strong>Claude Code インストール済みの方</strong> が対象です。<br>
+      まずはインストール支援オフ会（クロコインストール伴走会）へご参加ください。
+    </div>
+    <div class="answer-badge" id="q1-ans" style="display:none"></div>
+  </div>
+
+  <!-- Q2: OS -->
+  <div class="card" id="q2" style="display:none">
+    <div class="question-label">Q2</div>
+    <div class="question-text">パソコンの種類を教えてください。</div>
+    <div class="btn-group">
+      <button class="btn green" onclick="answer(2,'Mac')">Mac</button>
+      <button class="btn green" onclick="answer(2,'Windows')">Windows</button>
+    </div>
+    <div class="answer-badge" id="q2-ans" style="display:none"></div>
+  </div>
+
+  <!-- Q3a: Mac バージョン -->
+  <div class="card" id="q3a" style="display:none">
+    <div class="question-label">Q3</div>
+    <div class="question-text">Mac の macOS バージョンを教えてください。<br><small style="font-weight:normal;color:#666">（左上リンゴ → このMacについて で確認できます）</small></div>
+    <div class="btn-group">
+      <button class="btn green" onclick="answer('3a','Sequoia / Tahoe（最新）')">Sequoia / Tahoe（最新）</button>
+      <button class="btn orange" onclick="answer('3a','Sonoma / Ventura（一世代前）')">Sonoma / Ventura</button>
+      <button class="btn orange" onclick="answer('3a','Monterey 以前')">Monterey 以前</button>
+    </div>
+    <div class="alert orange-bg" id="q3a-alert-old">
+      Claude Code の動作には <strong>macOS 13 Ventura 以降</strong> が必要です。<br>
+      できればオフ会前にアップデートをお試しください（時間がかかる場合があります）。
+    </div>
+    <div class="alert red-bg" id="q3a-alert-veryold">
+      お使いの Mac では Claude Code が動作しない可能性があります。<br>
+      事前にサバ缶へご相談ください。
+    </div>
+    <div class="answer-badge" id="q3a-ans" style="display:none"></div>
+  </div>
+
+  <!-- Q3b: Windows バージョン -->
+  <div class="card" id="q3b" style="display:none">
+    <div class="question-label">Q3</div>
+    <div class="question-text">Windows のバージョンを教えてください。<br><small style="font-weight:normal;color:#666">（スタートボタン右クリック → システム で確認できます）</small></div>
+    <div class="btn-group">
+      <button class="btn green" onclick="answer('3b','Windows 11')">Windows 11</button>
+      <button class="btn orange" onclick="answer('3b','Windows 10')">Windows 10</button>
+      <button class="btn orange" onclick="answer('3b','Windows 8 / 7 以前')">Windows 8 / 7 以前</button>
+    </div>
+    <div class="alert orange-bg" id="q3b-alert-win10">
+      Windows 10 でも動作しますが、<strong>Windows 11 へのアップグレードを推奨</strong>します。<br>
+      2025年10月にサポートが終了予定です。
+    </div>
+    <div class="alert red-bg" id="q3b-alert-old">
+      Windows 8 以前では Claude Code は動作しません。<br>
+      事前にサバ缶へご相談ください。
+    </div>
+    <div class="answer-badge" id="q3b-ans" style="display:none"></div>
+  </div>
+
+  <!-- Q4: ChatGPTアカウント -->
+  <div class="card" id="q4" style="display:none">
+    <div class="question-label">Q4</div>
+    <div class="question-text">ChatGPT のアカウントを持っていますか？<br><small style="font-weight:normal;color:#666">当日、デザイン画像の生成に使います（無料プランでOK）</small></div>
+    <div class="btn-group">
+      <button class="btn green" onclick="answer(4,'持っている（有料プラン）')">持っている（有料）</button>
+      <button class="btn green" onclick="answer(4,'持っている（無料プラン）')">持っている（無料）</button>
+      <button class="btn orange" onclick="answer(4,'持っていない')">持っていない</button>
+    </div>
+    <div class="alert orange-bg" id="q4-alert">
+      ChatGPT の無料アカウントが必要です。<br>
+      オフ会前に <strong>chatgpt.com</strong> でアカウントを作成しておいてください（メールアドレスで登録できます）。
+    </div>
+    <div class="answer-badge" id="q4-ans" style="display:none"></div>
+  </div>
+
+  <!-- Q5: Cloudflareアカウント -->
+  <div class="card" id="q5" style="display:none">
+    <div class="question-label">Q5</div>
+    <div class="question-text">Cloudflare のアカウントを持っていますか？<br><small style="font-weight:normal;color:#666">当日、Webサイトの公開に使います（無料・クレジットカード不要）</small></div>
+    <div class="btn-group">
+      <button class="btn green" onclick="answer(5,'持っている')">持っている</button>
+      <button class="btn orange" onclick="answer(5,'持っていない')">持っていない</button>
+    </div>
+    <div class="alert orange-bg" id="q5-alert">
+      Cloudflare の無料アカウントが必要です。<br>
+      オフ会前に <strong>cloudflare.com</strong> でアカウントを作成しておいてください。<br>
+      メールアドレスだけで登録でき、クレジットカードは不要です。
+    </div>
+    <div class="answer-badge" id="q5-ans" style="display:none"></div>
+  </div>
+
+  <!-- Q6: 作りたいサイトのジャンル -->
+  <div class="card" id="q6" style="display:none">
+    <div class="question-label">Q6</div>
+    <div class="question-text">作りたい Web サイトのイメージはありますか？</div>
+    <div class="btn-group">
+      <button class="btn green" onclick="answer(6,'自己紹介・プロフィールサイト')">自己紹介・プロフィール</button>
+      <button class="btn green" onclick="answer(6,'趣味・ブログ・活動紹介')">趣味・ブログ・活動紹介</button>
+      <button class="btn green" onclick="answer(6,'ビジネス・サービス紹介')">ビジネス・サービス紹介</button>
+      <button class="btn orange" onclick="answer(6,'まだ決まっていない')">まだ決まっていない</button>
+    </div>
+    <div class="alert orange-bg" id="q6-alert">
+      大丈夫です！当日一緒に考えましょう。<br>
+      「どんな人に見てほしいか」「何を伝えたいか」をざっくり考えてきてもらえると、スムーズです。
+    </div>
+    <div class="answer-badge" id="q6-ans" style="display:none"></div>
+  </div>
+
+  <!-- Q7: ファイル操作スキル -->
+  <div class="card" id="q7" style="display:none">
+    <div class="question-label">Q7</div>
+    <div class="question-text">ファイルの保存・移動・フォルダ作成は問題なくできますか？</div>
+    <div class="btn-group">
+      <button class="btn green" onclick="answer(7,'問題なくできる')">問題なくできる</button>
+      <button class="btn orange" onclick="answer(7,'少し不安')">少し不安</button>
+    </div>
+    <div class="alert orange-bg" id="q7-alert">
+      当日、生成したファイルをフォルダにまとめる操作があります。<br>
+      難しければオフ会内でフォローしますが、事前に練習しておくとスムーズです。
+    </div>
+    <div class="answer-badge" id="q7-ans" style="display:none"></div>
+  </div>
+
+  <!-- Q8: スクリーンショット -->
+  <div class="card" id="q8" style="display:none">
+    <div class="question-label">Q8</div>
+    <div class="question-text" id="q8-text">スクリーンショット（画面の撮影）は撮れますか？<br><small style="font-weight:normal;color:#666" id="q8-hint"></small></div>
+    <div class="btn-group">
+      <button class="btn green" onclick="answer(8,'撮れる')">撮れる</button>
+      <button class="btn orange" onclick="answer(8,'撮れない・知らない')">撮れない・知らない</button>
+    </div>
+    <div class="alert orange-bg" id="q8-alert"></div>
+    <div class="answer-badge" id="q8-ans" style="display:none"></div>
+  </div>
+
+  <!-- Q9: Claude Codeへの画像添付経験 -->
+  <div class="card" id="q9" style="display:none">
+    <div class="question-label">Q9</div>
+    <div class="question-text">Claude Code のチャットに画像を添付して使ったことがありますか？</div>
+    <div class="btn-group">
+      <button class="btn green" onclick="answer(9,'ある')">ある</button>
+      <button class="btn orange" onclick="answer(9,'ない')">ない</button>
+    </div>
+    <div class="alert orange-bg" id="q9-alert">
+      当日一緒にやるので大丈夫です！<br>
+      チャット画面に画像ファイルをドラッグ＆ドロップするだけで添付できます。
+    </div>
+    <div class="answer-badge" id="q9-ans" style="display:none"></div>
+  </div>
+
+  <!-- 結果セクション -->
+  <div id="result-section" class="card">
+    <div class="question-label">完了</div>
+    <div class="question-text">回答完了！以下をコピーしてチャットに貼り付けてください。</div>
+    <button id="copy-btn" disabled onclick="copyResult()">コピーする</button>
+    <div id="copy-msg">コピーしました！</div>
+    <div id="result-text"></div>
+  </div>
+</main>
+
+<script>
+  const state = {
+    os: null,
+    answers: {}
+  };
+
+  const TOTAL_QUESTIONS = 9;
+
+  function updateProgress() {
+    const answered = Object.keys(state.answers).length;
+    const pct = Math.round((answered / TOTAL_QUESTIONS) * 100);
+    document.getElementById('progress-bar').style.width = pct + '%';
+  }
+
+  function show(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.display = 'block';
+      setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    }
+  }
+
+  function setAnswerBadge(qid, val) {
+    const el = document.getElementById('q' + qid + '-ans');
+    if (el) { el.textContent = '選択：' + val; el.style.display = 'inline-block'; }
+  }
+
+  function disableButtons(qid) {
+    const card = document.getElementById('q' + qid);
+    if (!card) return;
+    card.querySelectorAll('.btn').forEach(b => b.disabled = true);
+  }
+
+  function answer(qid, val) {
+    state.answers[qid] = val;
+    setAnswerBadge(qid, val);
+    disableButtons(qid);
+    updateProgress();
+    handleLogic(qid, val);
+    updateCopyBtn();
+  }
+
+  function hideAlert(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  }
+
+  function showAlert(id) {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'block';
+  }
+
+  function handleLogic(qid, val) {
+    if (qid === 1) {
+      if (val === 'できていない・不安') {
+        showAlert('q1-alert');
+      }
+      show('q2');
+      return;
+    }
+
+    if (qid === 2) {
+      state.os = val;
+      // Q8のヒントをOSに応じて設定
+      if (val === 'Mac') {
+        document.getElementById('q8-hint').textContent = 'Mac：Command + Shift + 4 で範囲選択撮影できます';
+        document.getElementById('q8-alert').textContent = 'Mac は Command + Shift + 4 で画面の一部を撮影できます。オフ会前に一度試しておいてください。';
+      } else {
+        document.getElementById('q8-hint').textContent = 'Windows：PrintScreen キーまたは Windows + Shift + S で撮影できます';
+        document.getElementById('q8-alert').textContent = 'Windows は「Windows キー + Shift + S」で画面の一部を撮影できます。オフ会前に一度試しておいてください。';
+      }
+      if (val === 'Mac') { show('q3a'); } else { show('q3b'); }
+      return;
+    }
+
+    if (qid === '3a') {
+      if (val === 'Sonoma / Ventura（一世代前）') { showAlert('q3a-alert-old'); }
+      if (val === 'Monterey 以前') { showAlert('q3a-alert-veryold'); }
+      show('q4');
+      return;
+    }
+
+    if (qid === '3b') {
+      if (val === 'Windows 10') { showAlert('q3b-alert-win10'); }
+      if (val === 'Windows 8 / 7 以前') { showAlert('q3b-alert-old'); }
+      show('q4');
+      return;
+    }
+
+    if (qid === 4) {
+      if (val === '持っていない') { showAlert('q4-alert'); }
+      show('q5');
+      return;
+    }
+
+    if (qid === 5) {
+      if (val === '持っていない') { showAlert('q5-alert'); }
+      show('q6');
+      return;
+    }
+
+    if (qid === 6) {
+      if (val === 'まだ決まっていない') { showAlert('q6-alert'); }
+      show('q7');
+      return;
+    }
+
+    if (qid === 7) {
+      if (val === '少し不安') { showAlert('q7-alert'); }
+      show('q8');
+      return;
+    }
+
+    if (qid === 8) {
+      if (val === '撮れない・知らない') { showAlert('q8-alert'); }
+      show('q9');
+      return;
+    }
+
+    if (qid === 9) {
+      if (val === 'ない') { showAlert('q9-alert'); }
+      show('result-section');
+      buildResult();
+      return;
+    }
+  }
+
+  function updateCopyBtn() {
+    const btn = document.getElementById('copy-btn');
+    const answered = Object.keys(state.answers).length;
+    btn.disabled = answered < TOTAL_QUESTIONS;
+  }
+
+  function buildResult() {
+    const a = state.answers;
+    const os = state.os || '';
+
+    const q3key = os === 'Mac' ? '3a' : '3b';
+    const osVer = a[q3key] || '未回答';
+
+    let lines = [
+      '【First WEB 事前問診】',
+      '',
+      `Q1. クロコ起動: ${a[1] || '未回答'}`,
+      `Q2. OS: ${a[2] || '未回答'}`,
+      `Q3. OSバージョン: ${osVer}`,
+      `Q4. ChatGPT: ${a[4] || '未回答'}`,
+      `Q5. Cloudflare: ${a[5] || '未回答'}`,
+      `Q6. 作りたいサイト: ${a[6] || '未回答'}`,
+      `Q7. ファイル操作: ${a[7] || '未回答'}`,
+      `Q8. スクリーンショット: ${a[8] || '未回答'}`,
+      `Q9. 画像添付チャット経験: ${a[9] || '未回答'}`,
+    ];
+
+    document.getElementById('result-text').textContent = lines.join('\n');
+  }
+
+  function copyResult() {
+    const text = document.getElementById('result-text').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        document.getElementById('copy-msg').style.display = 'block';
+        setTimeout(() => document.getElementById('copy-msg').style.display = 'none', 2500);
+      });
+    }
+  }
+</script>
+</body>
+</html>
