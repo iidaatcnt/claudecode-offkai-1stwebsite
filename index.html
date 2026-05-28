@@ -85,9 +85,6 @@
     .btn.orange { background: var(--btn-orange); }
     .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    .selected-green { outline: 3px solid #2e7d32; }
-    .selected-orange { outline: 3px solid #bf5000; }
-
     .alert {
       border-radius: 8px;
       padding: 12px 14px;
@@ -181,182 +178,126 @@
     <div class="progress-bar" id="progress-bar" style="width:0%"></div>
   </div>
 
-  <!-- Q1: Claude Code 使えているか -->
-  <div class="card" id="q1">
-    <div class="question-label">Q1</div>
-    <div class="question-text">Claude Code（クロコ）のデスクトップ版で、チャットが普通にできていますか？</div>
+  <!-- 前提: クロコ起動確認 -->
+  <div class="card" id="q0">
+    <div class="question-label">前提確認</div>
+    <div class="question-text">クロコ（Claude Codeデスクトップ版）を起動して、チャットが普通にできていますか？</div>
     <div class="btn-group">
-      <button class="btn green" onclick="answer(1,'できている')">できている</button>
-      <button class="btn orange" onclick="answer(1,'できていない')">できていない・不安</button>
+      <button class="btn green" onclick="answer('q0','できている')">できている</button>
+      <button class="btn orange" onclick="answer('q0','できていない・不安')">できていない・不安</button>
     </div>
-    <div class="alert red-bg" id="q1-alert">
-      このオフ会は <strong>Claude Code インストール済みの方</strong> が対象です。<br>
-      まずはインストール支援オフ会（クロコインストール伴走会）へご参加ください。
+    <div class="alert red-bg" id="q0-block">
+      このオフ会は <strong>クロコ（Claude Code）のインストール済みの方</strong> が対象です。<br>
+      まずはクロコインストール伴走会へご参加ください。<br>
+      インストールが完了してからまたご確認ください。
     </div>
-    <div class="answer-badge" id="q1-ans" style="display:none"></div>
+    <div class="answer-badge" id="q0-ans" style="display:none"></div>
   </div>
 
-  <!-- Q2: OS -->
-  <div class="card" id="q2" style="display:none">
-    <div class="question-label">Q2</div>
+  <!-- OS選択 -->
+  <div class="card" id="q-os" style="display:none">
+    <div class="question-label">OS</div>
     <div class="question-text">パソコンの種類を教えてください。</div>
     <div class="btn-group">
-      <button class="btn green" onclick="answer(2,'Mac')">Mac</button>
-      <button class="btn green" onclick="answer(2,'Windows')">Windows</button>
+      <button class="btn green" onclick="answer('os','Mac')">Mac</button>
+      <button class="btn green" onclick="answer('os','Windows')">Windows</button>
     </div>
-    <div class="answer-badge" id="q2-ans" style="display:none"></div>
+    <div class="answer-badge" id="os-ans" style="display:none"></div>
   </div>
 
-  <!-- Q3a: Mac バージョン -->
-  <div class="card" id="q3a" style="display:none">
-    <div class="question-label">Q3</div>
-    <div class="question-text">Mac の macOS バージョンを教えてください。<br><small style="font-weight:normal;color:#666">（左上リンゴ → このMacについて で確認できます）</small></div>
+  <!-- CHK1: フォルダ作成 -->
+  <div class="card" id="chk1" style="display:none">
+    <div class="question-label">CHK 1</div>
+    <div class="question-text">
+      クロコのチャットで「デスクトップに『my-website』というフォルダを作って」と送って、フォルダが作れましたか？
+      <br><small style="font-weight:normal;color:#666;font-size:0.85rem;">※まだの場合は今すぐ試してみてください！</small>
+    </div>
     <div class="btn-group">
-      <button class="btn green" onclick="answer('3a','Sequoia / Tahoe（最新）')">Sequoia / Tahoe（最新）</button>
-      <button class="btn orange" onclick="answer('3a','Sonoma / Ventura（一世代前）')">Sonoma / Ventura</button>
-      <button class="btn orange" onclick="answer('3a','Monterey 以前')">Monterey 以前</button>
+      <button class="btn green" onclick="answer('chk1','できた')">できた！</button>
+      <button class="btn orange" onclick="answer('chk1','できなかった')">できなかった</button>
     </div>
-    <div class="alert orange-bg" id="q3a-alert-old">
-      Claude Code の動作には <strong>macOS 13 Ventura 以降</strong> が必要です。<br>
-      できればオフ会前にアップデートをお試しください（時間がかかる場合があります）。
+    <div class="alert orange-bg" id="chk1-alert">
+      当日一緒に確認しましょう。<br>
+      クロコのチャット欄に「デスクトップに my-website フォルダを作って」と入力してみてください。<br>
+      うまくいかない場合はサバ缶へご連絡ください。
     </div>
-    <div class="alert red-bg" id="q3a-alert-veryold">
-      お使いの Mac では Claude Code が動作しない可能性があります。<br>
-      事前にサバ缶へご相談ください。
-    </div>
-    <div class="answer-badge" id="q3a-ans" style="display:none"></div>
+    <div class="answer-badge" id="chk1-ans" style="display:none"></div>
   </div>
 
-  <!-- Q3b: Windows バージョン -->
-  <div class="card" id="q3b" style="display:none">
-    <div class="question-label">Q3</div>
-    <div class="question-text">Windows のバージョンを教えてください。<br><small style="font-weight:normal;color:#666">（スタートボタン右クリック → システム で確認できます）</small></div>
+  <!-- CHK2: スクリーンショット -->
+  <div class="card" id="chk2" style="display:none">
+    <div class="question-label">CHK 2</div>
+    <div class="question-text">
+      スクリーンショット（画面の一部撮影）の撮り方をマスターしていますか？<br>
+      <small style="font-weight:normal;color:#666;font-size:0.85rem;" id="chk2-hint"></small>
+    </div>
     <div class="btn-group">
-      <button class="btn green" onclick="answer('3b','Windows 11')">Windows 11</button>
-      <button class="btn orange" onclick="answer('3b','Windows 10')">Windows 10</button>
-      <button class="btn orange" onclick="answer('3b','Windows 8 / 7 以前')">Windows 8 / 7 以前</button>
+      <button class="btn green" onclick="answer('chk2','マスターした')">マスターした！</button>
+      <button class="btn orange" onclick="answer('chk2','まだ不安')">まだ不安</button>
     </div>
-    <div class="alert orange-bg" id="q3b-alert-win10">
-      Windows 10 でも動作しますが、<strong>Windows 11 へのアップグレードを推奨</strong>します。<br>
-      2025年10月にサポートが終了予定です。
-    </div>
-    <div class="alert red-bg" id="q3b-alert-old">
-      Windows 8 以前では Claude Code は動作しません。<br>
-      事前にサバ缶へご相談ください。
-    </div>
-    <div class="answer-badge" id="q3b-ans" style="display:none"></div>
+    <div class="alert orange-bg" id="chk2-alert"></div>
+    <div class="answer-badge" id="chk2-ans" style="display:none"></div>
   </div>
 
-  <!-- Q4: ChatGPTアカウント -->
-  <div class="card" id="q4" style="display:none">
-    <div class="question-label">Q4</div>
-    <div class="question-text">ChatGPT のアカウントを持っていますか？<br><small style="font-weight:normal;color:#666">当日、デザイン画像の生成に使います（無料プランでOK）</small></div>
+  <!-- CHK3: GitHub -->
+  <div class="card" id="chk3" style="display:none">
+    <div class="question-label">CHK 3</div>
+    <div class="question-text">
+      GitHub のアカウントを持っていますか？<br>
+      <small style="font-weight:normal;color:#666;font-size:0.85rem;">当日、Webサイトのファイルを管理するのに使います（無料）</small>
+    </div>
     <div class="btn-group">
-      <button class="btn green" onclick="answer(4,'持っている（有料プラン）')">持っている（有料）</button>
-      <button class="btn green" onclick="answer(4,'持っている（無料プラン）')">持っている（無料）</button>
-      <button class="btn orange" onclick="answer(4,'持っていない')">持っていない</button>
+      <button class="btn green" onclick="answer('chk3','ある')">ある</button>
+      <button class="btn orange" onclick="answer('chk3','ない')">ない</button>
     </div>
-    <div class="alert orange-bg" id="q4-alert">
-      ChatGPT の無料アカウントが必要です。<br>
-      オフ会前に <strong>chatgpt.com</strong> でアカウントを作成しておいてください（メールアドレスで登録できます）。
+    <div class="alert orange-bg" id="chk3-alert">
+      オフ会前に <strong>github.com</strong> で無料アカウントを作成しておいてください。<br>
+      メールアドレスだけで登録できます。
     </div>
-    <div class="answer-badge" id="q4-ans" style="display:none"></div>
+    <div class="answer-badge" id="chk3-ans" style="display:none"></div>
   </div>
 
-  <!-- Q5: Cloudflareアカウント -->
-  <div class="card" id="q5" style="display:none">
-    <div class="question-label">Q5</div>
-    <div class="question-text">Cloudflare のアカウントを持っていますか？<br><small style="font-weight:normal;color:#666">当日、Webサイトの公開に使います（無料・クレジットカード不要）</small></div>
-    <div class="btn-group">
-      <button class="btn green" onclick="answer(5,'持っている')">持っている</button>
-      <button class="btn orange" onclick="answer(5,'持っていない')">持っていない</button>
+  <!-- CHK4: Cloudflare -->
+  <div class="card" id="chk4" style="display:none">
+    <div class="question-label">CHK 4</div>
+    <div class="question-text">
+      Cloudflare のアカウントを持っていますか？<br>
+      <small style="font-weight:normal;color:#666;font-size:0.85rem;">当日、Webサイトをインターネットに公開するのに使います（無料・カード不要）</small>
     </div>
-    <div class="alert orange-bg" id="q5-alert">
-      Cloudflare の無料アカウントが必要です。<br>
-      オフ会前に <strong>cloudflare.com</strong> でアカウントを作成しておいてください。<br>
+    <div class="btn-group">
+      <button class="btn green" onclick="answer('chk4','ある')">ある</button>
+      <button class="btn orange" onclick="answer('chk4','ない')">ない</button>
+    </div>
+    <div class="alert orange-bg" id="chk4-alert">
+      オフ会前に <strong>cloudflare.com</strong> で無料アカウントを作成しておいてください。<br>
       メールアドレスだけで登録でき、クレジットカードは不要です。
     </div>
-    <div class="answer-badge" id="q5-ans" style="display:none"></div>
+    <div class="answer-badge" id="chk4-ans" style="display:none"></div>
   </div>
 
-  <!-- Q6: GitHubアカウント -->
-  <div class="card" id="q6" style="display:none">
-    <div class="question-label">Q6</div>
-    <div class="question-text">GitHub のアカウントを持っていますか？<br><small style="font-weight:normal;color:#666">Cloudflare Pages と連携してサイトを公開するのに使います（無料）</small></div>
+  <!-- CHK5: 学長プロンプト -->
+  <div class="card" id="chk5" style="display:none">
+    <div class="question-label">CHK 5</div>
+    <div class="question-text">
+      「学長プロンプト」を実行しましたか？<br>
+      <small style="font-weight:normal;color:#666;font-size:0.85rem;">リベシティで両学長が配布しているプロンプトです。クロコのチャットに貼り付けて送信すると、Claude.md にセキュリティ設定が追記されます。</small>
+    </div>
     <div class="btn-group">
-      <button class="btn green" onclick="answer(6,'持っている')">持っている</button>
-      <button class="btn orange" onclick="answer(6,'持っていない')">持っていない</button>
+      <button class="btn green" onclick="answer('chk5','やった')">やった！</button>
+      <button class="btn orange" onclick="answer('chk5','まだ')">まだ</button>
     </div>
-    <div class="alert orange-bg" id="q6-alert">
-      GitHub の無料アカウントが必要です。<br>
-      オフ会前に <strong>github.com</strong> でアカウントを作成しておいてください（メールアドレスで登録できます）。
+    <div class="alert orange-bg" id="chk5-alert">
+      リベシティから配布されている学長プロンプトをクロコのチャット欄に貼り付けて送信してください。<br>
+      Claude.md にセキュリティ設定が自動で追記されます。<br>
+      オフ会当日に一緒にやることもできますので、わからなければそのまま来てください！
     </div>
-    <div class="answer-badge" id="q6-ans" style="display:none"></div>
-  </div>
-
-  <!-- Q7: 作りたいサイトのジャンル -->
-  <div class="card" id="q7" style="display:none">
-    <div class="question-label">Q7</div>
-    <div class="question-text">作りたい Web サイトのイメージはありますか？</div>
-    <div class="btn-group">
-      <button class="btn green" onclick="answer(7,'自己紹介・プロフィールサイト')">自己紹介・プロフィール</button>
-      <button class="btn green" onclick="answer(7,'趣味・ブログ・活動紹介')">趣味・ブログ・活動紹介</button>
-      <button class="btn green" onclick="answer(7,'ビジネス・サービス紹介')">ビジネス・サービス紹介</button>
-      <button class="btn orange" onclick="answer(7,'まだ決まっていない')">まだ決まっていない</button>
-    </div>
-    <div class="alert orange-bg" id="q7-alert">
-      大丈夫です！当日一緒に考えましょう。<br>
-      「どんな人に見てほしいか」「何を伝えたいか」をざっくり考えてきてもらえると、スムーズです。
-    </div>
-    <div class="answer-badge" id="q7-ans" style="display:none"></div>
-  </div>
-
-  <!-- Q8: ファイル操作スキル -->
-  <div class="card" id="q8" style="display:none">
-    <div class="question-label">Q8</div>
-    <div class="question-text">ファイルの保存・移動・フォルダ作成は問題なくできますか？</div>
-    <div class="btn-group">
-      <button class="btn green" onclick="answer(8,'問題なくできる')">問題なくできる</button>
-      <button class="btn orange" onclick="answer(8,'少し不安')">少し不安</button>
-    </div>
-    <div class="alert orange-bg" id="q8-alert-skill">
-      当日、生成したファイルをフォルダにまとめる操作があります。<br>
-      難しければオフ会内でフォローしますが、事前に練習しておくとスムーズです。
-    </div>
-    <div class="answer-badge" id="q8-ans" style="display:none"></div>
-  </div>
-
-  <!-- Q9: スクリーンショット -->
-  <div class="card" id="q9" style="display:none">
-    <div class="question-label">Q9</div>
-    <div class="question-text">スクリーンショット（画面の撮影）は撮れますか？<br><small style="font-weight:normal;color:#666" id="q9-hint"></small></div>
-    <div class="btn-group">
-      <button class="btn green" onclick="answer(9,'撮れる')">撮れる</button>
-      <button class="btn orange" onclick="answer(9,'撮れない・知らない')">撮れない・知らない</button>
-    </div>
-    <div class="alert orange-bg" id="q9-alert"></div>
-    <div class="answer-badge" id="q9-ans" style="display:none"></div>
-  </div>
-
-  <!-- Q10: Claude Codeへの画像添付経験 -->
-  <div class="card" id="q10" style="display:none">
-    <div class="question-label">Q10</div>
-    <div class="question-text">Claude Code のチャットに画像を添付して使ったことがありますか？</div>
-    <div class="btn-group">
-      <button class="btn green" onclick="answer(10,'ある')">ある</button>
-      <button class="btn orange" onclick="answer(10,'ない')">ない</button>
-    </div>
-    <div class="alert orange-bg" id="q10-alert">
-      当日一緒にやるので大丈夫です！<br>
-      チャット画面に画像ファイルをドラッグ＆ドロップするだけで添付できます。
-    </div>
-    <div class="answer-badge" id="q10-ans" style="display:none"></div>
+    <div class="answer-badge" id="chk5-ans" style="display:none"></div>
   </div>
 
   <!-- 結果セクション -->
   <div id="result-section" class="card">
     <div class="question-label">完了</div>
-    <div class="question-text">回答完了！以下をコピーしてチャットに貼り付けてください。</div>
+    <div class="question-text">チェック完了！以下をコピーしてサバ缶のチャットに貼り付けてください。</div>
     <button id="copy-btn" disabled onclick="copyResult()">コピーする</button>
     <div id="copy-msg">コピーしました！</div>
     <div id="result-text"></div>
@@ -369,7 +310,8 @@
     answers: {}
   };
 
-  const TOTAL_QUESTIONS = 10;
+  // 前提確認 + OS + CHK1〜5 の計7問
+  const TOTAL_QUESTIONS = 7;
 
   function updateProgress() {
     const answered = Object.keys(state.answers).length;
@@ -386,12 +328,12 @@
   }
 
   function setAnswerBadge(qid, val) {
-    const el = document.getElementById('q' + qid + '-ans');
+    const el = document.getElementById(qid + '-ans');
     if (el) { el.textContent = '選択：' + val; el.style.display = 'inline-block'; }
   }
 
-  function disableButtons(qid) {
-    const card = document.getElementById('q' + qid);
+  function disableButtons(cardId) {
+    const card = document.getElementById(cardId);
     if (!card) return;
     card.querySelectorAll('.btn').forEach(b => b.disabled = true);
   }
@@ -399,10 +341,16 @@
   function answer(qid, val) {
     state.answers[qid] = val;
     setAnswerBadge(qid, val);
-    disableButtons(qid);
+    disableButtons(cardIdFor(qid));
     updateProgress();
     handleLogic(qid, val);
     updateCopyBtn();
+  }
+
+  function cardIdFor(qid) {
+    if (qid === 'q0') return 'q0';
+    if (qid === 'os') return 'q-os';
+    return qid; // chk1〜chk5 はそのままIDと一致
   }
 
   function showAlert(id) {
@@ -411,78 +359,58 @@
   }
 
   function handleLogic(qid, val) {
-    if (qid === 1) {
-      if (val === 'できていない・不安') { showAlert('q1-alert'); }
-      show('q2');
-      return;
-    }
-
-    if (qid === 2) {
-      state.os = val;
-      // Q9のヒントをOSに応じて設定
-      if (val === 'Mac') {
-        document.getElementById('q9-hint').textContent = 'Mac：Command + Shift + 4 で範囲選択撮影できます';
-        document.getElementById('q9-alert').textContent = 'Mac は Command + Shift + 4 で画面の一部を撮影できます。オフ会前に一度試しておいてください。';
-      } else {
-        document.getElementById('q9-hint').textContent = 'Windows：PrintScreen キーまたは Windows + Shift + S で撮影できます';
-        document.getElementById('q9-alert').textContent = 'Windows は「Windows キー + Shift + S」で画面の一部を撮影できます。オフ会前に一度試しておいてください。';
+    if (qid === 'q0') {
+      if (val === 'できていない・不安') {
+        showAlert('q0-block');
+        return; // ブロック
       }
-      if (val === 'Mac') { show('q3a'); } else { show('q3b'); }
+      show('q-os');
       return;
     }
 
-    if (qid === '3a') {
-      if (val === 'Sonoma / Ventura（一世代前）') { showAlert('q3a-alert-old'); }
-      if (val === 'Monterey 以前') { showAlert('q3a-alert-veryold'); }
-      show('q4');
+    if (qid === 'os') {
+      state.os = val;
+      if (val === 'Mac') {
+        document.getElementById('chk2-hint').textContent = 'Mac：Command ＋ Shift ＋ 4 で範囲選択して撮影できます';
+        document.getElementById('chk2-alert').innerHTML =
+          'Mac は <strong>Command ＋ Shift ＋ 4</strong> で画面の一部を撮影できます。<br>' +
+          'オフ会前に一度試しておいてください。デスクトップに画像が保存されます。';
+      } else {
+        document.getElementById('chk2-hint').textContent = 'Windows：Windows ＋ Shift ＋ S でスニッピングツールが起動します';
+        document.getElementById('chk2-alert').innerHTML =
+          'Windows は <strong>Windows キー ＋ Shift ＋ S</strong> で画面の一部を撮影できます。<br>' +
+          'オフ会前に一度試しておいてください。';
+      }
+      show('chk1');
       return;
     }
 
-    if (qid === '3b') {
-      if (val === 'Windows 10') { showAlert('q3b-alert-win10'); }
-      if (val === 'Windows 8 / 7 以前') { showAlert('q3b-alert-old'); }
-      show('q4');
+    if (qid === 'chk1') {
+      if (val === 'できなかった') showAlert('chk1-alert');
+      show('chk2');
       return;
     }
 
-    if (qid === 4) {
-      if (val === '持っていない') { showAlert('q4-alert'); }
-      show('q5');
+    if (qid === 'chk2') {
+      if (val === 'まだ不安') showAlert('chk2-alert');
+      show('chk3');
       return;
     }
 
-    if (qid === 5) {
-      if (val === '持っていない') { showAlert('q5-alert'); }
-      show('q6');
+    if (qid === 'chk3') {
+      if (val === 'ない') showAlert('chk3-alert');
+      show('chk4');
       return;
     }
 
-    if (qid === 6) {
-      if (val === '持っていない') { showAlert('q6-alert'); }
-      show('q7');
+    if (qid === 'chk4') {
+      if (val === 'ない') showAlert('chk4-alert');
+      show('chk5');
       return;
     }
 
-    if (qid === 7) {
-      if (val === 'まだ決まっていない') { showAlert('q7-alert'); }
-      show('q8');
-      return;
-    }
-
-    if (qid === 8) {
-      if (val === '少し不安') { showAlert('q8-alert-skill'); }
-      show('q9');
-      return;
-    }
-
-    if (qid === 9) {
-      if (val === '撮れない・知らない') { showAlert('q9-alert'); }
-      show('q10');
-      return;
-    }
-
-    if (qid === 10) {
-      if (val === 'ない') { showAlert('q10-alert'); }
+    if (qid === 'chk5') {
+      if (val === 'まだ') showAlert('chk5-alert');
       show('result-section');
       buildResult();
       return;
@@ -497,26 +425,17 @@
 
   function buildResult() {
     const a = state.answers;
-    const os = state.os || '';
-
-    const q3key = os === 'Mac' ? '3a' : '3b';
-    const osVer = a[q3key] || '未回答';
-
-    let lines = [
+    const lines = [
       '【First WEB 事前問診】',
       '',
-      `Q1. クロコ起動: ${a[1] || '未回答'}`,
-      `Q2. OS: ${a[2] || '未回答'}`,
-      `Q3. OSバージョン: ${osVer}`,
-      `Q4. ChatGPT: ${a[4] || '未回答'}`,
-      `Q5. Cloudflare: ${a[5] || '未回答'}`,
-      `Q6. GitHub: ${a[6] || '未回答'}`,
-      `Q7. 作りたいサイト: ${a[7] || '未回答'}`,
-      `Q8. ファイル操作: ${a[8] || '未回答'}`,
-      `Q9. スクリーンショット: ${a[9] || '未回答'}`,
-      `Q10. 画像添付チャット経験: ${a[10] || '未回答'}`,
+      `前提. クロコ起動: ${a['q0'] || '未回答'}`,
+      `OS: ${a['os'] || '未回答'}`,
+      `CHK1. フォルダ作成: ${a['chk1'] || '未回答'}`,
+      `CHK2. スクリーンショット: ${a['chk2'] || '未回答'}`,
+      `CHK3. GitHub: ${a['chk3'] || '未回答'}`,
+      `CHK4. Cloudflare: ${a['chk4'] || '未回答'}`,
+      `CHK5. 学長プロンプト: ${a['chk5'] || '未回答'}`,
     ];
-
     document.getElementById('result-text').textContent = lines.join('\n');
   }
 
