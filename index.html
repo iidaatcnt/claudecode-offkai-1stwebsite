@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>First WEB 問診チェック</title>
+  <title>クロコで初めてのWEBアプリワークショップ問診</title>
   <style>
     :root {
       --orange: #DA7756;
@@ -29,8 +29,8 @@
       padding: 20px 16px;
       text-align: center;
     }
-    header h1 { font-size: 1.4rem; font-weight: bold; }
-    header p { font-size: 0.85rem; margin-top: 6px; opacity: 0.9; }
+    header h1 { font-size: 1.3rem; font-weight: bold; line-height: 1.4; }
+    header p  { font-size: 0.85rem; margin-top: 6px; opacity: 0.9; }
 
     main {
       max-width: 600px;
@@ -91,21 +91,18 @@
       font-size: 0.95rem;
       font-weight: bold;
       cursor: pointer;
-      transition: opacity 0.15s, transform 0.1s, border-color 0.15s;
+      transition: opacity 0.15s, transform 0.1s;
       color: white;
       opacity: 0.65;
     }
     .btn:active { transform: scale(0.97); }
-    .btn.green { background: var(--btn-green); }
+    .btn.green  { background: var(--btn-green); }
     .btn.orange { background: var(--btn-orange); }
-
-    /* 選択中のボタン */
     .btn.selected {
       opacity: 1;
       border-color: rgba(0,0,0,0.35);
       box-shadow: 0 0 0 2px rgba(0,0,0,0.15);
     }
-    /* 未選択時はhoverで少し明るく */
     .btn:not(.selected):hover { opacity: 0.85; }
 
     .alert {
@@ -192,7 +189,7 @@
 <body>
 
 <header>
-  <h1>First WEB 問診チェック</h1>
+  <h1>クロコで初めてのWEBアプリワークショップ問診</h1>
   <p>はじめてのWebサイト公開オフ会 事前確認シート</p>
 </header>
 
@@ -201,7 +198,7 @@
     <div class="progress-bar" id="progress-bar" style="width:0%"></div>
   </div>
   <div class="reset-bar">
-    <button class="reset-btn" onclick="resetAll()">↩ 最初からやり直す</button>
+    <button class="reset-btn" onclick="location.reload()">↩ 最初からやり直す</button>
   </div>
 
   <!-- 前提: クロコ起動確認 -->
@@ -209,7 +206,7 @@
     <div class="question-label">前提確認</div>
     <div class="question-text">クロコ（Claude Codeデスクトップ版）を起動して、チャットが普通にできていますか？</div>
     <div class="btn-group">
-      <button class="btn green" data-qid="q0" data-val="できている"    onclick="answer(this)">できている</button>
+      <button class="btn green"  data-qid="q0" data-val="できている"       onclick="answer(this)">できている</button>
       <button class="btn orange" data-qid="q0" data-val="できていない・不安" onclick="answer(this)">できていない・不安</button>
     </div>
     <div class="alert red-bg" id="q0-block">
@@ -220,17 +217,6 @@
     <div class="answer-badge" id="q0-ans" style="display:none"></div>
   </div>
 
-  <!-- OS選択 -->
-  <div class="card" id="q-os" style="display:none">
-    <div class="question-label">OS</div>
-    <div class="question-text">パソコンの種類を教えてください。</div>
-    <div class="btn-group">
-      <button class="btn green" data-qid="os" data-val="Mac"     onclick="answer(this)">Mac</button>
-      <button class="btn green" data-qid="os" data-val="Windows" onclick="answer(this)">Windows</button>
-    </div>
-    <div class="answer-badge" id="os-ans" style="display:none"></div>
-  </div>
-
   <!-- CHK1: フォルダ作成 -->
   <div class="card" id="chk1" style="display:none">
     <div class="question-label">CHK 1</div>
@@ -239,13 +225,12 @@
       <br><small style="font-weight:normal;color:#666;font-size:0.85rem;">※まだの場合は今すぐ試してみてください！</small>
     </div>
     <div class="btn-group">
-      <button class="btn green"  data-qid="chk1" data-val="できた"      onclick="answer(this)">できた！</button>
+      <button class="btn green"  data-qid="chk1" data-val="できた"       onclick="answer(this)">できた！</button>
       <button class="btn orange" data-qid="chk1" data-val="できなかった" onclick="answer(this)">できなかった</button>
     </div>
     <div class="alert orange-bg" id="chk1-alert">
-      当日一緒に確認しましょう。<br>
       クロコのチャット欄に「デスクトップに my-website フォルダを作って」と入力してみてください。<br>
-      うまくいかない場合はサバ缶へご連絡ください。
+      うまくいかない場合はサバ缶へご連絡ください。当日一緒に確認しましょう。
     </div>
     <div class="answer-badge" id="chk1-ans" style="display:none"></div>
   </div>
@@ -255,13 +240,18 @@
     <div class="question-label">CHK 2</div>
     <div class="question-text">
       スクリーンショット（画面の一部撮影）の撮り方をマスターしていますか？<br>
-      <small style="font-weight:normal;color:#666;font-size:0.85rem;" id="chk2-hint"></small>
+      <small style="font-weight:normal;color:#666;font-size:0.85rem;">
+        Mac：Command ＋ Shift ＋ 4　／　Windows：Windows キー ＋ Shift ＋ S
+      </small>
     </div>
     <div class="btn-group">
       <button class="btn green"  data-qid="chk2" data-val="マスターした" onclick="answer(this)">マスターした！</button>
       <button class="btn orange" data-qid="chk2" data-val="まだ不安"     onclick="answer(this)">まだ不安</button>
     </div>
-    <div class="alert orange-bg" id="chk2-alert"></div>
+    <div class="alert orange-bg" id="chk2-alert">
+      Mac は <strong>Command ＋ Shift ＋ 4</strong>、Windows は <strong>Windows キー ＋ Shift ＋ S</strong> で画面の一部を撮影できます。<br>
+      オフ会前に一度試しておいてください。
+    </div>
     <div class="answer-badge" id="chk2-ans" style="display:none"></div>
   </div>
 
@@ -331,31 +321,12 @@
 </main>
 
 <script>
-  const state = { os: null, answers: {} };
-  const TOTAL_QUESTIONS = 7; // 前提 + OS + CHK1〜5
+  const state = { answers: {} };
+  const TOTAL_QUESTIONS = 6; // 前提 + CHK1〜5
+  const CHK_IDS = ['chk1', 'chk2', 'chk3', 'chk4', 'chk5'];
 
-  // 設問の順序（カードIDとstateキーのマッピング）
-  const Q_ORDER = ['q0', 'os', 'chk1', 'chk2', 'chk3', 'chk4', 'chk5'];
-  const Q_CARD  = { q0:'q0', os:'q-os', chk1:'chk1', chk2:'chk2', chk3:'chk3', chk4:'chk4', chk5:'chk5' };
-
-  /* ---------- ユーティリティ ---------- */
-  function show(id) {
-    const el = document.getElementById(id);
-    if (el) {
-      el.style.display = 'block';
-      setTimeout(() => el.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
-    }
-  }
-
-  function showAlert(id) {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'block';
-  }
-
-  function hideAlert(id) {
-    const el = document.getElementById(id);
-    if (el) el.style.display = 'none';
-  }
+  function showAlert(id)  { const el = document.getElementById(id); if (el) el.style.display = 'block'; }
+  function hideAlert(id)  { const el = document.getElementById(id); if (el) el.style.display = 'none';  }
 
   function setAnswerBadge(qid, val) {
     const el = document.getElementById(qid + '-ans');
@@ -368,51 +339,20 @@
   }
 
   function updateCopyBtn() {
-    document.getElementById('copy-btn').disabled =
-      Object.keys(state.answers).length < TOTAL_QUESTIONS;
+    const done = Object.keys(state.answers).length >= TOTAL_QUESTIONS;
+    document.getElementById('copy-btn').disabled = !done;
+    document.getElementById('result-section').style.display = done ? 'block' : 'none';
+    if (done) buildResult();
   }
 
-  /* ---------- 以降のカードをリセット ---------- */
-  function resetAfter(qid) {
-    const idx = Q_ORDER.indexOf(qid);
-    for (let i = idx + 1; i < Q_ORDER.length; i++) {
-      const id  = Q_ORDER[i];
-      const card = document.getElementById(Q_CARD[id]);
-      if (!card) continue;
-      card.style.display = 'none';
-      // ボタン選択解除
-      card.querySelectorAll('.btn').forEach(b => b.classList.remove('selected'));
-      // アラート非表示
-      card.querySelectorAll('.alert').forEach(a => a.style.display = 'none');
-      // バッジ非表示
-      const badge = document.getElementById(id + '-ans');
-      if (badge) badge.style.display = 'none';
-      delete state.answers[id];
-    }
-    // 結果セクション非表示
-    document.getElementById('result-section').style.display = 'none';
-    updateProgress();
-    updateCopyBtn();
-  }
-
-  /* ---------- 回答処理 ---------- */
   function answer(btn) {
     const qid = btn.dataset.qid;
     const val  = btn.dataset.val;
 
-    // 選択肢が変わる場合は以降をリセット
-    if (state.answers[qid] !== undefined && state.answers[qid] !== val) {
-      resetAfter(qid);
-      // 現在カードのアラートも全消し
-      document.getElementById(Q_CARD[qid])
-        .querySelectorAll('.alert').forEach(a => a.style.display = 'none');
-    }
-
     state.answers[qid] = val;
 
-    // ボタンのselected表示を更新
-    const card = document.getElementById(Q_CARD[qid]);
-    card.querySelectorAll('.btn[data-qid="' + qid + '"]').forEach(b => b.classList.remove('selected'));
+    // ボタンの selected 表示を更新
+    btn.closest('.btn-group').querySelectorAll('.btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
 
     setAnswerBadge(qid, val);
@@ -421,90 +361,51 @@
     updateCopyBtn();
   }
 
-  /* ---------- 分岐ロジック ---------- */
   function handleLogic(qid, val) {
     if (qid === 'q0') {
-      if (val === 'できていない・不安') { showAlert('q0-block'); return; }
-      hideAlert('q0-block');
-      show('q-os');
-      return;
-    }
-
-    if (qid === 'os') {
-      state.os = val;
-      if (val === 'Mac') {
-        document.getElementById('chk2-hint').textContent = 'Mac：Command ＋ Shift ＋ 4 で範囲選択して撮影できます';
-        document.getElementById('chk2-alert').innerHTML =
-          'Mac は <strong>Command ＋ Shift ＋ 4</strong> で画面の一部を撮影できます。<br>' +
-          'オフ会前に一度試しておいてください。デスクトップに画像が保存されます。';
-      } else {
-        document.getElementById('chk2-hint').textContent = 'Windows：Windows ＋ Shift ＋ S でスニッピングツールが起動します';
-        document.getElementById('chk2-alert').innerHTML =
-          'Windows は <strong>Windows キー ＋ Shift ＋ S</strong> で画面の一部を撮影できます。<br>' +
-          'オフ会前に一度試しておいてください。';
+      if (val === 'できていない・不安') {
+        showAlert('q0-block');
+        // CHK を全て非表示（やり直しから戻った場合に備えて）
+        CHK_IDS.forEach(id => document.getElementById(id).style.display = 'none');
+        document.getElementById('result-section').style.display = 'none';
+        // CHK の回答を削除
+        CHK_IDS.forEach(id => delete state.answers[id]);
+        return;
       }
-      show('chk1');
+      hideAlert('q0-block');
+      // CHK1〜5 を一気に全表示
+      CHK_IDS.forEach(id => document.getElementById(id).style.display = 'block');
       return;
     }
 
-    if (qid === 'chk1') {
-      val === 'できなかった' ? showAlert('chk1-alert') : hideAlert('chk1-alert');
-      show('chk2');
-      return;
-    }
-
-    if (qid === 'chk2') {
-      val === 'まだ不安' ? showAlert('chk2-alert') : hideAlert('chk2-alert');
-      show('chk3');
-      return;
-    }
-
-    if (qid === 'chk3') {
-      val === 'ない' ? showAlert('chk3-alert') : hideAlert('chk3-alert');
-      show('chk4');
-      return;
-    }
-
-    if (qid === 'chk4') {
-      val === 'ない' ? showAlert('chk4-alert') : hideAlert('chk4-alert');
-      show('chk5');
-      return;
-    }
-
-    if (qid === 'chk5') {
-      val === 'まだ' ? showAlert('chk5-alert') : hideAlert('chk5-alert');
-      show('result-section');
-      buildResult();
-      return;
+    const alertMap = {
+      chk1: { ng: 'できなかった', id: 'chk1-alert' },
+      chk2: { ng: 'まだ不安',     id: 'chk2-alert' },
+      chk3: { ng: 'ない',         id: 'chk3-alert' },
+      chk4: { ng: 'ない',         id: 'chk4-alert' },
+      chk5: { ng: 'まだ',         id: 'chk5-alert' },
+    };
+    if (alertMap[qid]) {
+      val === alertMap[qid].ng ? showAlert(alertMap[qid].id) : hideAlert(alertMap[qid].id);
     }
   }
 
-  /* ---------- 全リセット ---------- */
-  function resetAll() {
-    location.reload();
-  }
-
-  /* ---------- 結果生成 ---------- */
   function buildResult() {
     const a = state.answers;
-    const q3key = state.os === 'Mac' ? '3a' : '3b';
     document.getElementById('result-text').textContent = [
-      '【First WEB 事前問診】',
+      '【クロコWEBアプリワークショップ 事前問診】',
       '',
-      `前提. クロコ起動: ${a['q0']   || '未回答'}`,
-      `OS:              ${a['os']    || '未回答'}`,
-      `CHK1. フォルダ作成:       ${a['chk1'] || '未回答'}`,
-      `CHK2. スクリーンショット: ${a['chk2'] || '未回答'}`,
-      `CHK3. GitHub:             ${a['chk3'] || '未回答'}`,
-      `CHK4. Cloudflare:         ${a['chk4'] || '未回答'}`,
-      `CHK5. 学長プロンプト:     ${a['chk5'] || '未回答'}`,
+      `前提. クロコ起動:             ${a['q0']   || '未回答'}`,
+      `CHK1. フォルダ作成:           ${a['chk1'] || '未回答'}`,
+      `CHK2. スクリーンショット:     ${a['chk2'] || '未回答'}`,
+      `CHK3. GitHub:                 ${a['chk3'] || '未回答'}`,
+      `CHK4. Cloudflare:             ${a['chk4'] || '未回答'}`,
+      `CHK5. 学長プロンプト:         ${a['chk5'] || '未回答'}`,
     ].join('\n');
   }
 
-  /* ---------- コピー ---------- */
   function copyResult() {
-    const text = document.getElementById('result-text').textContent;
-    navigator.clipboard?.writeText(text).then(() => {
+    navigator.clipboard?.writeText(document.getElementById('result-text').textContent).then(() => {
       const msg = document.getElementById('copy-msg');
       msg.style.display = 'block';
       setTimeout(() => msg.style.display = 'none', 2500);
