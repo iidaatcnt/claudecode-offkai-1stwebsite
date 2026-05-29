@@ -217,6 +217,17 @@
     <div class="answer-badge" id="q0-ans" style="display:none"></div>
   </div>
 
+  <!-- OS選択 -->
+  <div class="card" id="q-os" style="display:none">
+    <div class="question-label">OS</div>
+    <div class="question-text">パソコンの種類を教えてください。</div>
+    <div class="btn-group">
+      <button class="btn green" data-qid="os" data-val="Mac"     onclick="answer(this)">Mac</button>
+      <button class="btn green" data-qid="os" data-val="Windows" onclick="answer(this)">Windows</button>
+    </div>
+    <div class="answer-badge" id="os-ans" style="display:none"></div>
+  </div>
+
   <!-- CHK1: フォルダ作成 -->
   <div class="card" id="chk1" style="display:none">
     <div class="question-label">CHK 1</div>
@@ -322,7 +333,7 @@
 
 <script>
   const state = { answers: {} };
-  const TOTAL_QUESTIONS = 6; // 前提 + CHK1〜5
+  const TOTAL_QUESTIONS = 7; // 前提 + OS + CHK1〜5
   const CHK_IDS = ['chk1', 'chk2', 'chk3', 'chk4', 'chk5'];
 
   function showAlert(id)  { const el = document.getElementById(id); if (el) el.style.display = 'block'; }
@@ -365,15 +376,18 @@
     if (qid === 'q0') {
       if (val === 'できていない・不安') {
         showAlert('q0-block');
-        // CHK を全て非表示（やり直しから戻った場合に備えて）
+        // OS・CHK を全て非表示（やり直しから戻った場合に備えて）
+        document.getElementById('q-os').style.display = 'none';
         CHK_IDS.forEach(id => document.getElementById(id).style.display = 'none');
         document.getElementById('result-section').style.display = 'none';
-        // CHK の回答を削除
+        // OS・CHK の回答を削除
+        delete state.answers['os'];
         CHK_IDS.forEach(id => delete state.answers[id]);
         return;
       }
       hideAlert('q0-block');
-      // CHK1〜5 を一気に全表示
+      // OS選択 + CHK1〜5 を一気に全表示
+      document.getElementById('q-os').style.display = 'block';
       CHK_IDS.forEach(id => document.getElementById(id).style.display = 'block');
       return;
     }
@@ -396,6 +410,7 @@
       '【クロコWEBアプリワークショップ 事前問診】',
       '',
       `前提. クロコ起動:             ${a['q0']   || '未回答'}`,
+      `OS:                           ${a['os']   || '未回答'}`,
       `CHK1. フォルダ作成:           ${a['chk1'] || '未回答'}`,
       `CHK2. スクリーンショット:     ${a['chk2'] || '未回答'}`,
       `CHK3. GitHub:                 ${a['chk3'] || '未回答'}`,
